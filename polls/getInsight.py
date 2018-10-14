@@ -1,5 +1,6 @@
 import csv
 import codecs
+import pycountry
 from collections import Counter
 
 from utils import parseCSVFile, testCSVFileFormatMatching, isNumber, parseSubmissionTime
@@ -47,6 +48,9 @@ def getAuthorInfo(inputFile):
 	parsedResult['topAuthors'] = {'labels': [ele[0] for ele in topAuthors], 'data': [ele[1] for ele in topAuthors]}
 
 	countries = [ele['country'] for ele in authorList if ele]
+	countryCount = Counter(countries)
+	parsedResult['countryCount'] = {'labels': [ele[0] for ele in topCountries], 'data': [ele[1] for ele in topCountries]}
+
 	topCountries = Counter(countries).most_common(10)
 	parsedResult['topCountries'] = {'labels': [ele[0] for ele in topCountries], 'data': [ele[1] for ele in topCountries]}
 
