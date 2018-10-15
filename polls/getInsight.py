@@ -49,9 +49,20 @@ def getAuthorInfo(inputFile):
 
 	countries = [ele['country'] for ele in authorList if ele]
 	countryCount = Counter(countries)
-	parsedResult['countryCount'] = {'labels': [ele[0] for ele in topCountries], 'data': [ele[1] for ele in topCountries]}
+	countryCountLabel = []
+	countryCountData = []
+	for country in countryCount:
+		countryCode = ''
+		try:
+			countryCode = pycountry.countries.get(name=country).alpha_2
+		except KeyError:
+			continue
+		countryCountLabel.append(countryCode)
+		countryCountData.append(countryCount[country])
 
-	topCountries = Counter(countries).most_common(10)
+	parsedResult['countryCount'] = {'labels': countryCountLabel, 'data': countryCountData}
+
+	topCountries = countryCount.most_common(10)
 	parsedResult['topCountries'] = {'labels': [ele[0] for ele in topCountries], 'data': [ele[1] for ele in topCountries]}
 
 	affiliations = [ele['affiliation'] for ele in authorList if ele]
